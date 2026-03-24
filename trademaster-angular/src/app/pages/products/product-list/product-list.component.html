@@ -1,0 +1,186 @@
+<!-- src/app/pages/products/product-list/product-list.component.html -->
+
+<div class="product-list-container">
+  
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h2 class="page-title">Product Management</h2>
+      <p class="page-subtitle">Manage your products, track inventory, and update pricing</p>
+    </div>
+    <button class="btn btn-primary" (click)="addProduct()">
+      <i class="bi bi-plus-circle"></i> Add New Product
+    </button>
+  </div>
+
+  <!-- Alert Messages -->
+  <div *ngIf="success" class="alert alert-success alert-dismissible fade show" role="alert">
+    <i class="bi bi-check-circle"></i> {{ success }}
+    <button type="button" class="btn-close" (click)="success = ''"></button>
+  </div>
+  
+  <div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+    <i class="bi bi-exclamation-triangle"></i> {{ error }}
+    <button type="button" class="btn-close" (click)="error = ''"></button>
+  </div>
+
+  <!-- Filters Card -->
+  <div class="card filters-card">
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <div class="search-box">
+            <i class="bi bi-search"></i>
+            <input 
+              type="text" 
+              class="form-control" 
+              placeholder="Search by name, code or SKU..."
+              [(ngModel)]="searchTerm"
+              (input)="searchProducts()">
+          </div>
+        </div>
+        <div class="col-md-3">
+          <select class="form-select" [(ngModel)]="selectedCategory" (change)="filterByCategory()">
+            <option value="">All Categories</option>
+            <option *ngFor="let cat of categories" [value]="cat.category_id">
+              {{ cat.category_name }}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <select class="form-select" [(ngModel)]="selectedStatus" (change)="filterByStatus()">
+            <option value="">All Status</option>
+            <option value="ACTIVE">Active</option>
+            <option value="INACTIVE">Inactive</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-outline-secondary w-100" (click)="clearFilters()">
+            <i class="bi bi-eraser"></i> Clear
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p>Loading products...</p>
+  </div>
+
+  <!-- Products Table -->
+  <div *ngIf="!loading" class="card products-table-card">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th style="width: 5%">#</th>
+              <th style="width: 15%">Code</th>
+              <th style="width: 25%">Product Name</th>
+              <th style="width: 12%">Category</th>
+              <th style="width: 12%">Price</th>
+              <th style="width: 12%">Stock</th>
+              <th style="width: 10%">Status</th>
+              <th style="width: 15%">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of paginatedProducts; let i = index">
+              <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+              <td>
+                <span class="product-code">{{ product.product_code }}</span>
+                <small class="d-block text-muted" *ngIf="product.sku">SKU: {{ product.sku }}</small>
+              </td>
+              <td>
+                <div class="product-info">
+                  <img 
+                    [src]="product.image_url || 'assets/images/no-image.png'" 
+                    class="product-thumb" 
+                    onerror="this.src='assets/images/no-image.png'">
+                  <div class="product-details">
+                    <strong>{{ product.product_name }}</strong>
+                    <small class="d-block text-muted">{{ product.unit_type }}</small>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <span class="badge bg-secondary">{{ getCategoryName(product.category_id) }}</span>
+              </td>
+              <td>
+                <div class="price-info">
+                  <strong class="selling-price">{{ product.selling_price | currency }}</strong>
+                  <small class="d-block text-muted">Buy: {{ product.buying_price | currency }}</small>
+                </div>
+              </td>
+              <td>
+                <div class="stock-info">
+                  <span class="stock-quantity">{{ product.quantity || 0 }}</span>
+                  <span class="stock-badge" [class]="getStockStatusClass(product.quantity || 0, product.reorder_level)">
+                    {{ getStockStatusText(product.quantity || 0, product.reorder_level) }}
+                  </span>
+                  <small class="d-block text-muted" *ngIf="product.quantity <= product.reorder_level">
+                    Reorder at: {{ product.reorder_level }}
+                  </small>
+                </div>
+              </td>
+              <td>
+                <span class="status-badge" [class]="getStatusClass(product.status)">
+                  {{ product.status }}
+                </span>
+              </td>
+              <td>
+                <div class="action-buttons">
+                  <button class="btn btn-sm btn-outline-info" (click)="viewProduct(product.product_id)" title="View">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-warning" (click)="editProduct(product.product_id)" title="Edit">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" (click)="deleteProduct(product.product_id, product.product_name)" title="Delete">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="filteredProducts.length === 0">
+              <td colspan="8" class="text-center py-5">
+                <i class="bi bi-inbox" style="font-size: 48px; color: #ccc;"></i>
+                <p class="mt-2 text-muted">No products found</p>
+                <button class="btn btn-primary btn-sm mt-2" (click)="addProduct()">
+                  <i class="bi bi-plus-circle"></i> Add Your First Product
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <!-- Pagination -->
+    <div class="card-footer" *ngIf="filteredProducts.length > 0">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="pagination-info">
+          Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to 
+          {{ Math.min(currentPage * itemsPerPage, totalItems) }} of {{ totalItems }} products
+        </div>
+        <div class="pagination-controls">
+          <button class="btn btn-sm btn-outline-secondary" 
+                  [disabled]="currentPage === 1" 
+                  (click)="onPageChange(currentPage - 1)">
+            <i class="bi bi-chevron-left"></i> Previous
+          </button>
+          <span class="mx-2">Page {{ currentPage }} of {{ Math.ceil(totalItems / itemsPerPage) }}</span>
+          <button class="btn btn-sm btn-outline-secondary" 
+                  [disabled]="currentPage === Math.ceil(totalItems / itemsPerPage)" 
+                  (click)="onPageChange(currentPage + 1)">
+            Next <i class="bi bi-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,6 @@
-export interface Expense {
+// src/app/models/expense.model.ts
+
+export interface IExpense {
   expense_id: number;
   company_id: number;
   expense_date: Date;
@@ -12,7 +14,7 @@ export interface Expense {
   created_at: Date;
 }
 
-export class ExpenseModel implements Expense {
+export class Expense implements IExpense {
   expense_id: number = 0;
   company_id: number = 0;
   expense_date: Date = new Date();

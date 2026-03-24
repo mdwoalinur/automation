@@ -24,3 +24,4 @@ export * from './report_cache.model';
 export * from './audit_logs.model';
 export * from './user_sessions.model';
 export * from './notifications.model';
+export * from './expense-category.model';

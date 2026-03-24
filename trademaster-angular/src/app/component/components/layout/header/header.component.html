@@ -1,0 +1,38 @@
+<header class="header">
+  <div class="header-left">
+    <button class="btn-toggle" (click)="toggleSidebar()">
+      <i class="bi bi-list"></i>
+    </button>
+    <h4 class="page-title">{{ pageTitle }}</h4>
+  </div>
+  
+  <div class="header-right">
+    <div class="dropdown">
+      <button class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown">
+        <i class="bi bi-bell"></i>
+        <span class="badge bg-danger" *ngIf="notifications.length">{{ notifications.length }}</span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li *ngFor="let notif of notifications">
+          <a class="dropdown-item" href="#">
+            <i class="bi bi-info-circle"></i> {{ notif.message }}
+          </a>
+        </li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="#">View All</a></li>
+      </ul>
+    </div>
+    
+    <div class="dropdown">
+      <button class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown">
+        <i class="bi bi-person-circle"></i> {{ currentUser }}
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li><a class="dropdown-item" href="#"><i class="bi bi-person"></i> Profile</a></li>
+        <li><a class="dropdown-item" href="#"><i class="bi bi-gear"></i> Settings</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="#" (click)="logout()"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</header>

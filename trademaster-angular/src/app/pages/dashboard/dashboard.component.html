@@ -1,0 +1,113 @@
+<div class="dashboard">
+  <!-- Stats Cards -->
+  <div class="row g-4">
+    <div class="col-md-3">
+      <div class="stat-card bg-primary">
+        <div class="stat-info">
+          <h3>{{ stats.totalProducts }}</h3>
+          <p>Total Products</p>
+        </div>
+        <i class="bi bi-box"></i>
+      </div>
+    </div>
+    
+    <div class="col-md-3">
+      <div class="stat-card bg-success">
+        <div class="stat-info">
+          <h3>{{ stats.todaySales | currency }}</h3>
+          <p>Today's Sales</p>
+        </div>
+        <i class="bi bi-cart"></i>
+      </div>
+    </div>
+    
+    <div class="col-md-3">
+      <div class="stat-card bg-warning">
+        <div class="stat-info">
+          <h3>{{ stats.lowStock }}</h3>
+          <p>Low Stock Items</p>
+        </div>
+        <i class="bi bi-exclamation-triangle"></i>
+      </div>
+    </div>
+    
+    <div class="col-md-3">
+      <div class="stat-card bg-info">
+        <div class="stat-info">
+          <h3>{{ stats.totalCustomers }}</h3>
+          <p>Total Customers</p>
+        </div>
+        <i class="bi bi-people"></i>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Charts Row -->
+  <div class="row mt-4">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h5>Sales Overview</h5>
+        </div>
+        <div class="card-body">
+          <canvas id="salesChart"></canvas>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">
+          <h5>Top Selling Products</h5>
+        </div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between" *ngFor="let product of topProducts">
+              <span>{{ product.name }}</span>
+              <span class="badge bg-primary">{{ product.sold }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Recent Transactions -->
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5>Recent Sales</h5>
+        </div>
+        <div class="card-body">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Invoice No</th>
+                <th>Customer</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let sale of recentSales">
+                <td>{{ sale.invoice_no }}</td>
+                <td>{{ sale.customer_name }}</td>
+                <td>{{ sale.total_amount | currency }}</td>
+                <td>
+                  <span class="badge" [class.bg-success]="sale.payment_status === 'PAID'" 
+                        [class.bg-warning]="sale.payment_status === 'PARTIAL'"
+                        [class.bg-danger]="sale.payment_status === 'UNPAID'">
+                    {{ sale.payment_status }}
+                  </span>
+                </td>
+                <td>{{ sale.sale_date | date }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

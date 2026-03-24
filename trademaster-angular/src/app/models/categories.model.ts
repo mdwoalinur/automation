@@ -8,7 +8,7 @@ export interface Category {
   created_at: Date;
 }
 
-export class CategoryModel implements Category {
+export class Category implements Category {
   category_id: number = 0;
   company_id: number = 0;
   category_name: string = '';

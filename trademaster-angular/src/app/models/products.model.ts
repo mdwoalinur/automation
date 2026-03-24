@@ -1,5 +1,3 @@
-export type ProductStatus = 'ACTIVE' | 'INACTIVE';
-
 export interface Product {
   product_id: number;
   company_id: number;
@@ -15,13 +13,14 @@ export interface Product {
   min_stock_level: number;
   max_stock_level: number;
   reorder_level: number;
+  quantity: number;  // from inventory join
   image_url: string;
-  status: ProductStatus;
+  status: 'ACTIVE' | 'INACTIVE';
   created_at: Date;
   updated_at: Date;
 }
 
-export class ProductModel implements Product {
+export class Product implements Product {
   product_id: number = 0;
   company_id: number = 0;
   category_id: number = 0;
@@ -36,8 +35,9 @@ export class ProductModel implements Product {
   min_stock_level: number = 10;
   max_stock_level: number = 100;
   reorder_level: number = 20;
+  quantity: number = 0;
   image_url: string = '';
-  status: ProductStatus = 'ACTIVE';
+  status: 'ACTIVE' | 'INACTIVE' = 'ACTIVE';
   created_at: Date = new Date();
   updated_at: Date = new Date();
 }
