@@ -1,1 +1,215 @@
-<p>pos works!</p>
+<div class="pos-container">
+  <div class="row g-0">
+    <!-- Left Panel - Products -->
+    <div class="col-xl-8">
+      <div class="product-panel">
+        <!-- Header -->
+        <div class="panel-header">
+          <h4 class="mb-0">Point of Sale</h4>
+          <div class="header-actions">
+            <button class="btn btn-outline-danger btn-sm" (click)="clearCart()">
+              <i class="bi bi-trash"></i> Clear Cart
+            </button>
+          </div>
+        </div>
+        
+        <!-- Barcode Scanner -->
+        <div class="barcode-section">
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-upc-scan"></i></span>
+            <input type="text" class="form-control" placeholder="Scan barcode or enter SKU..."
+                   [(ngModel)]="barcodeInput" (keyup.enter)="applyBarcode()">
+            <button class="btn btn-primary" (click)="applyBarcode()">
+              <i class="bi bi-search"></i> Add
+            </button>
+          </div>
+        </div>
+        
+        <!-- Search & Filter -->
+        <div class="search-section">
+          <div class="row g-2">
+            <div class="col-md-6">
+              <input type="text" class="form-control" placeholder="Search products..."
+                     [(ngModel)]="searchTerm" (input)="searchProducts()">
+            </div>
+            <div class="col-md-4">
+              <select class="form-select" [(ngModel)]="selectedCategory" (change)="filterByCategory()">
+                <option value="">All Categories</option>
+                <option *ngFor="let cat of categories" [value]="cat.id">
+                  {{ cat.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Products Grid -->
+        <div class="products-grid">
+          <div *ngIf="loading" class="text-center py-5">
+            <div class="spinner-border text-primary"></div>
+          </div>
+          
+          <div class="product-card" *ngFor="let product of filteredProducts" (click)="addToCart(product)">
+            <div class="product-image">
+              <i class="bi bi-box"></i>
+            </div>
+            <div class="product-info">
+              <h6>{{ product.product_name }}</h6>
+              <p class="sku">{{ product.sku }}</p>
+              <div class="price-row">
+                <span class="price">{{ product.selling_price | currency }}</span>
+                <span class="stock" [class.low]="(product.quantity || 0) <= (product.reorder_level || 0)">
+                  Stock: {{ product.quantity || 0 }}
+                </span>
+              </div>
+            </div>
+          </div>
+          
+          <div *ngIf="filteredProducts.length === 0 && !loading" class="text-center py-5">
+            <i class="bi bi-inbox" style="font-size: 48px; color: #ccc;"></i>
+            <p class="mt-2">No products found</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Right Panel - Cart -->
+    <div class="col-xl-4">
+      <div class="cart-panel">
+        <div class="panel-header">
+          <h5 class="mb-0">Shopping Cart</h5>
+          <span class="cart-count">{{ cart.length }} items</span>
+        </div>
+        
+        <!-- Cart Items -->
+        <div class="cart-items">
+          <div *ngIf="cart.length === 0" class="empty-cart">
+            <i class="bi bi-cart"></i>
+            <p>Cart is empty</p>
+            <small>Click on products to add</small>
+          </div>
+          
+          <div class="cart-item" *ngFor="let item of cart">
+            <div class="item-info">
+              <h6>{{ item.product_name }}</h6>
+              <p class="sku">{{ item.sku }}</p>
+              <p class="price">{{ item.unit_price | currency }}</p>
+            </div>
+            <div class="item-controls">
+              <div class="quantity-control">
+                <button class="btn btn-sm btn-outline-secondary" (click)="updateCartQuantity(item, item.quantity - 1)">
+                  <i class="bi bi-dash"></i>
+                </button>
+                <input type="number" class="quantity-input" [(ngModel)]="item.quantity" 
+                       (change)="updateCartQuantity(item, item.quantity)">
+                <button class="btn btn-sm btn-outline-secondary" (click)="updateCartQuantity(item, item.quantity + 1)">
+                  <i class="bi bi-plus"></i>
+                </button>
+              </div>
+              <div class="item-total">
+                <strong>{{ item.total | currency }}</strong>
+              </div>
+              <button class="btn btn-sm btn-outline-danger" (click)="removeFromCart(item)">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Cart Summary -->
+        <div class="cart-summary">
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span>{{ subtotal | currency }}</span>
+          </div>
+          <div class="summary-row">
+            <span>Discount ({{ discountPercent }}%)</span>
+            <span class="text-danger">-{{ discountAmount | currency }}</span>
+          </div>
+          <div class="summary-row">
+            <span>Tax ({{ taxPercent }}%)</span>
+            <span>{{ taxAmount | currency }}</span>
+          </div>
+          <div class="summary-row total">
+            <span>Total</span>
+            <span>{{ totalAmount | currency }}</span>
+          </div>
+        </div>
+        
+        <!-- Customer & Actions -->
+        <div class="cart-actions">
+          <select class="form-select mb-2" [(ngModel)]="selectedCustomerId">
+            <option [value]="0">Walk-in Customer</option>
+            <option *ngFor="let customer of customers" [value]="customer.customer_id">
+              {{ customer.customer_name }}
+            </option>
+          </select>
+          
+          <div class="action-buttons">
+            <button class="btn btn-primary btn-lg w-100" (click)="openPaymentModal()" [disabled]="cart.length === 0">
+              <i class="bi bi-cash-stack"></i> Process Payment
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Payment Modal -->
+<div class="modal fade" [class.show]="showPaymentModal" tabindex="-1" style="display: block;" *ngIf="showPaymentModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Process Payment</h5>
+        <button type="button" class="btn-close" (click)="closePaymentModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="payment-details">
+          <div class="detail-row">
+            <span>Subtotal:</span>
+            <span>{{ subtotal | currency }}</span>
+          </div>
+          <div class="detail-row" *ngIf="discountAmount > 0">
+            <span>Discount:</span>
+            <span class="text-danger">-{{ discountAmount | currency }}</span>
+          </div>
+          <div class="detail-row" *ngIf="taxAmount > 0">
+            <span>Tax:</span>
+            <span>{{ taxAmount | currency }}</span>
+          </div>
+          <div class="detail-row total">
+            <span>Total Amount:</span>
+            <span>{{ totalAmount | currency }}</span>
+          </div>
+          
+          <div class="form-group mt-3">
+            <label>Payment Method</label>
+            <select class="form-select" [(ngModel)]="paymentMethod">
+              <option value="CASH">Cash</option>
+              <option value="BANK">Bank Transfer</option>
+              <option value="MOBILE_BANKING">Mobile Banking</option>
+              <option value="CARD">Credit/Debit Card</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label>Amount Paid</label>
+            <input type="number" class="form-control" [(ngModel)]="amountPaid" (input)="calculateChange()">
+          </div>
+          
+          <div class="detail-row change" *ngIf="changeAmount > 0">
+            <span>Change:</span>
+            <span class="text-success">{{ changeAmount | currency }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closePaymentModal()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="processSale()">Confirm Payment</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop fade show" *ngIf="showPaymentModal"></div>

@@ -1,0 +1,258 @@
+<!-- src/app/layouts/main-layout/main-layout.component.html -->
+<div class="trade-container">
+  <!-- Top Navigation Bar -->
+  <nav class="top-navbar">
+    <div class="nav-container">
+      <div class="nav-left">
+        <button class="menu-toggle" (click)="toggleSidebar()">
+          <i class="bi bi-list"></i>
+        </button>
+        <div class="logo">
+          <img src="assets/images/logo.png" alt="TradeMaster" class="logo-img">
+          <span class="logo-text">TradeMaster</span>
+          <span class="logo-badge">ERP</span>
+        </div>
+      </div>
+      
+      <div class="nav-center">
+        <div class="search-bar">
+          <i class="bi bi-search"></i>
+          <input type="text" placeholder="Search products, orders, customers..." class="search-input">
+          <kbd>Ctrl + K</kbd>
+        </div>
+      </div>
+      
+      <div class="nav-right">
+        <!-- Notifications -->
+        <div class="nav-item dropdown">
+          <button class="nav-icon-btn" data-bs-toggle="dropdown">
+            <i class="bi bi-bell"></i>
+            <span class="badge">12</span>
+          </button>
+          <div class="dropdown-menu dropdown-menu-end notification-dropdown">
+            <div class="dropdown-header">
+              <h6>Notifications</h6>
+              <a href="#">Mark all as read</a>
+            </div>
+            <div class="notification-list">
+              <a href="#" class="notification-item">
+                <div class="notification-icon bg-warning">
+                  <i class="bi bi-exclamation-triangle"></i>
+                </div>
+                <div class="notification-content">
+                  <p>Low stock alert: Samsung TV (Only 5 left)</p>
+                  <span>5 minutes ago</span>
+                </div>
+              </a>
+              <a href="#" class="notification-item">
+                <div class="notification-icon bg-success">
+                  <i class="bi bi-cart-check"></i>
+                </div>
+                <div class="notification-content">
+                  <p>New order #INV-001 received</p>
+                  <span>1 hour ago</span>
+                </div>
+              </a>
+              <a href="#" class="notification-item">
+                <div class="notification-icon bg-info">
+                  <i class="bi bi-truck"></i>
+                </div>
+                <div class="notification-content">
+                  <p>Purchase order #PO-001 delivered</p>
+                  <span>3 hours ago</span>
+                </div>
+              </a>
+            </div>
+            <div class="dropdown-footer">
+              <a href="#">View all notifications</a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Messages -->
+        <div class="nav-item dropdown">
+          <button class="nav-icon-btn" data-bs-toggle="dropdown">
+            <i class="bi bi-chat-dots"></i>
+            <span class="badge">3</span>
+          </button>
+          <div class="dropdown-menu dropdown-menu-end message-dropdown">
+            <div class="dropdown-header">
+              <h6>Messages</h6>
+              <a href="#">View all</a>
+            </div>
+            <div class="message-list">
+              <a href="#" class="message-item">
+                <img src="assets/images/avatar-1.jpg" alt="Avatar">
+                <div class="message-content">
+                  <p><strong>John Doe</strong> - Need product update</p>
+                  <span>2 min ago</span>
+                </div>
+              </a>
+              <a href="#" class="message-item">
+                <img src="assets/images/avatar-2.jpg" alt="Avatar">
+                <div class="message-content">
+                  <p><strong>Jane Smith</strong> - Invoice #INV-002</p>
+                  <span>15 min ago</span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- User Menu -->
+        <div class="nav-item dropdown">
+          <button class="user-menu-btn" data-bs-toggle="dropdown">
+            <img src="assets/images/admin-avatar.jpg" alt="User" class="user-avatar">
+            <div class="user-info">
+              <span class="user-name">Md Woalinur</span>
+              <span class="user-role">Administrator</span>
+            </div>
+            <i class="bi bi-chevron-down"></i>
+          </button>
+          <div class="dropdown-menu dropdown-menu-end user-dropdown">
+            <div class="user-header">
+              <img src="assets/images/admin-avatar.jpg" alt="User">
+              <div>
+                <h6>Md Woalinur</h6>
+                <p>admin@trademaster.com</p>
+              </div>
+            </div>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">
+              <i class="bi bi-person"></i> My Profile
+            </a>
+            <a href="#" class="dropdown-item">
+              <i class="bi bi-gear"></i> Settings
+            </a>
+            <a href="#" class="dropdown-item">
+              <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item text-danger">
+              <i class="bi bi-box-arrow-right"></i> Logout
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-wrapper">
+    <!-- Sidebar -->
+    <aside class="sidebar" [class.collapsed]="isSidebarCollapsed">
+      <div class="sidebar-menu">
+        <!-- Main Menu -->
+        <div class="menu-section">
+          <div class="menu-section-title">MAIN</div>
+          <a routerLink="/dashboard" routerLinkActive="active" class="menu-item">
+            <i class="bi bi-speedometer2"></i>
+            <span>Dashboard</span>
+            <span class="badge">New</span>
+          </a>
+          <a routerLink="/products" routerLinkActive="active" class="menu-item">
+            <i class="bi bi-box"></i>
+            <span>Products</span>
+            <i class="bi bi-chevron-right arrow"></i>
+          </a>
+          <a routerLink="/inventory" routerLinkActive="active" class="menu-item">
+            <i class="bi bi-archive"></i>
+            <span>Inventory</span>
+            <i class="bi bi-chevron-right arrow"></i>
+          </a>
+          <a routerLink="/sales/pos" routerLinkActive="active" class="menu-item">
+            <i class="bi bi-cart"></i>
+            <span>Point of Sale</span>
+          </a>
+        </div>
+        
+        <!-- Sales & Purchase -->
+        <div class="menu-section">
+          <div class="menu-section-title">TRANSACTIONS</div>
+          <a routerLink="/sales/list" routerLinkActive="active" class="menu-item">
+            <i class="bi bi-receipt"></i>
+            <span>Sales</span>
+          </a>
+          <a routerLink="/purchases" routerLinkActive="active" class="menu-item">
+            <i class="bi bi-truck"></i>
+            <span>Purchases</span>
+          </a>
+          <a routerLink="/customers" routerLinkActive="active" class="menu-item">
+            <i class="bi bi-people"></i>
+            <span>Customers</span>
+          </a>
+          <a routerLink="/suppliers" routerLinkActive="active" class="menu-item">
+            <i class="bi bi-building"></i>
+            <span>Suppliers</span>
+          </a>
+        </div>
+        
+        <!-- Reports & Settings -->
+        <div class="menu-section">
+          <div class="menu-section-title">REPORTS</div>
+          <a routerLink="/reports" routerLinkActive="active" class="menu-item">
+            <i class="bi bi-file-text"></i>
+            <span>Reports</span>
+          </a>
+          <a routerLink="/reports/sales" routerLinkActive="active" class="menu-item">
+            <i class="bi bi-graph-up"></i>
+            <span>Sales Report</span>
+          </a>
+          <a routerLink="/reports/inventory" routerLinkActive="active" class="menu-item">
+            <i class="bi bi-pie-chart"></i>
+            <span>Stock Report</span>
+          </a>
+        </div>
+        
+        <div class="menu-section">
+          <div class="menu-section-title">SYSTEM</div>
+          <a routerLink="/users" routerLinkActive="active" class="menu-item">
+            <i class="bi bi-person-badge"></i>
+            <span>Users</span>
+          </a>
+          <a routerLink="/settings" routerLinkActive="active" class="menu-item">
+            <i class="bi bi-gear"></i>
+            <span>Settings</span>
+          </a>
+        </div>
+      </div>
+      
+      <div class="sidebar-footer">
+        <div class="storage-info">
+          <i class="bi bi-hdd-stack"></i>
+          <div class="storage-text">
+            <span>Storage</span>
+            <span>245 GB / 500 GB</span>
+          </div>
+          <div class="progress">
+            <div class="progress-bar" style="width: 49%"></div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" [class.sidebar-collapsed]="isSidebarCollapsed">
+      <div class="content-wrapper">
+        <router-outlet></router-outlet>
+      </div>
+      
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="footer-content">
+          <div class="copyright">
+            &copy; 2024 TradeMaster Inventory System. All rights reserved.
+          </div>
+          <div class="footer-links">
+            <a href="#">About</a>
+            <a href="#">Support</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms</a>
+          </div>
+          <div class="version">
+            Version 2.0.0
+          </div>
+        </div>
+      </footer>
+    </main>
+  </div>
+</div>
