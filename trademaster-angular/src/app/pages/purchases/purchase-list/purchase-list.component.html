@@ -1,1 +1,134 @@
-<p>purchase-list works!</p>
+<div class="purchase-list-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h2 class="page-title">Purchase Management</h2>
+      <p class="page-subtitle">Manage all your purchase orders</p>
+    </div>
+    <button class="btn btn-primary" (click)="addPurchase()">
+      <i class="bi bi-plus-circle"></i> New Purchase Order
+    </button>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-card">
+    <div class="row g-3">
+      <div class="col-md-3">
+        <input type="text" class="form-control" placeholder="Search by PO number or supplier..."
+               [(ngModel)]="searchTerm" (input)="searchPurchases()">
+      </div>
+      <div class="col-md-2">
+        <select class="form-select" [(ngModel)]="selectedSupplier" (change)="filterBySupplier()">
+          <option value="">All Suppliers</option>
+          <option *ngFor="let supplier of suppliers" [value]="supplier.supplier_id">
+            {{ supplier.supplier_name }}
+          </option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <select class="form-select" [(ngModel)]="selectedStatus" (change)="filterByStatus()">
+          <option value="">All Status</option>
+          <option value="PENDING">Pending</option>
+          <option value="RECEIVED">Received</option>
+          <option value="CANCELLED">Cancelled</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <input type="date" class="form-control" placeholder="Start Date"
+               [(ngModel)]="startDate" (change)="filterByDate()">
+      </div>
+      <div class="col-md-2">
+        <input type="date" class="form-control" placeholder="End Date"
+               [(ngModel)]="endDate" (change)="filterByDate()">
+      </div>
+      <div class="col-md-1">
+        <button class="btn btn-outline-secondary w-100" (click)="clearFilters()">
+          <i class="bi bi-eraser"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner-border text-primary"></div>
+    <p>Loading purchases...</p>
+  </div>
+
+  <!-- Purchases Table -->
+  <div *ngIf="!loading" class="purchases-table-card">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>PO #</th>
+            <th>Supplier</th>
+            <th>Date</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Payment</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let purchase of paginatedPurchases">
+            <td class="fw-semibold">{{ purchase.purchase_order_no }}</td>
+            <td>{{ purchase.supplier_name || 'Unknown' }}</td>
+            <td>{{ purchase.purchase_date | date:'mediumDate' }}</td>
+            <td>{{ purchase.total_amount | currency }}</td>
+            <td>
+              <span class="badge" [class]="getStatusBadgeClass(purchase.status)">
+                {{ purchase.status }}
+              </span>
+            </td>
+            <td>
+              <span class="badge" [class]="getPaymentStatusClass(purchase.payment_status)">
+                {{ purchase.payment_status }}
+              </span>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-outline-info" (click)="viewPurchase(purchase.purchase_id)" title="View">
+                <i class="bi bi-eye"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-warning ms-1" (click)="editPurchase(purchase.purchase_id)" title="Edit">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button *ngIf="purchase.status === 'PENDING'" class="btn btn-sm btn-outline-success ms-1" 
+                      (click)="receivePurchase(purchase.purchase_id)" title="Receive">
+                <i class="bi bi-check-lg"></i>
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="filteredPurchases.length === 0">
+            <td colspan="7" class="text-center py-5">
+              <i class="bi bi-inbox" style="font-size: 48px;"></i>
+              <p class="mt-2">No purchase orders found</p>
+              <button class="btn btn-primary" (click)="addPurchase()">Create New Purchase Order</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- Pagination -->
+    <div class="pagination-footer" *ngIf="filteredPurchases.length > 0">
+      <div class="pagination-info">
+        Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to 
+        {{ Math.min(currentPage * itemsPerPage, totalItems) }} of {{ totalItems }} purchases
+      </div>
+      <div class="pagination-controls">
+        <button class="btn btn-sm btn-outline-secondary" 
+                [disabled]="currentPage === 1" 
+                (click)="onPageChange(currentPage - 1)">
+          <i class="bi bi-chevron-left"></i> Previous
+        </button>
+        <span class="mx-2">Page {{ currentPage }} of {{ Math.ceil(totalItems / itemsPerPage) }}</span>
+        <button class="btn btn-sm btn-outline-secondary" 
+                [disabled]="currentPage === Math.ceil(totalItems / itemsPerPage)" 
+                (click)="onPageChange(currentPage + 1)">
+          Next <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
