@@ -1,13 +1,9 @@
-// src/app/layouts/auth-layout/auth-layout.component.ts
-
 import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-auth-layout',
   template: `
     <div class="auth-container">
-      <!-- কোন sidebar/header/footer থাকবে না -->
-      <!-- শুধু child route এর content (login/register) দেখাবে -->
       <router-outlet></router-outlet>
     </div>
   `,
@@ -21,4 +17,4 @@ import { Component } from '@angular/core';
     }
   `]
 })
-export class AuthLayoutComponent {}
+export class AuthLayoutComponent { }

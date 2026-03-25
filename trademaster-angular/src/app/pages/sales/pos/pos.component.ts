@@ -65,6 +65,46 @@ export class PosComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+      // Mock products for testing
+  this.products = [
+    {
+      product_id: 1,
+      product_name: 'iPhone 15 Pro',
+      sku: 'IP15P',
+      product_code: 'IP-001',
+      selling_price: 95000,
+      quantity: 10,
+      category_id: 1,
+      status: 'ACTIVE'
+    } as any,
+    {
+      product_id: 2,
+      product_name: 'Samsung TV 55"',
+      sku: 'STV55',
+      product_code: 'TV-001',
+      selling_price: 65000,
+      quantity: 5,
+      category_id: 1,
+      status: 'ACTIVE'
+    } as any,
+    {
+      product_id: 3,
+      product_name: 'Men T-Shirt',
+      sku: 'MTS01',
+      product_code: 'CL-001',
+      selling_price: 550,
+      quantity: 50,
+      category_id: 2,
+      status: 'ACTIVE'
+    } as any
+  ];
+  this.filteredProducts = this.products;
+  
+  // Mock customers
+  this.customers = [
+    { customer_id: 1, customer_name: 'Rahman Store' } as any,
+    { customer_id: 2, customer_name: 'Karim Traders' } as any
+  ];
     this.loadProducts();
     this.loadCustomers();
     this.loadCategories();

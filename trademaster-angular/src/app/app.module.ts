@@ -67,6 +67,8 @@ import { PurchaseService } from './services/purchase.service';
 import { CustomerService } from './services/customer.service';
 import { SupplierService } from './services/supplier.service';
 import { ReportService } from './services/report.service';
+import { RegisterComponent } from './pages/auth/register/register/register.component';
+import { LoginComponent } from './pages/auth/login/login/login.component';
 
 @NgModule({
   declarations: [
@@ -76,6 +78,8 @@ import { ReportService } from './services/report.service';
     FooterComponent,
     MainLayoutComponent,
     AuthLayoutComponent,
+     LoginComponent,
+    RegisterComponent,
     DashboardComponent,
     ProductListComponent,
     ProductFormComponent,
@@ -94,7 +98,9 @@ import { ReportService } from './services/report.service';
     PurchaseFormComponent,
     CustomerListComponent,
     SupplierListComponent,
-    ReportsComponent
+    ReportsComponent,
+    RegisterComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

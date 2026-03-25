@@ -1,1 +1,123 @@
-<p>sale-list works!</p>
+<div class="sale-list-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h2 class="page-title">Sales List</h2>
+      <p class="page-subtitle">View and manage all your sales transactions</p>
+    </div>
+    <button class="btn btn-primary" routerLink="/sales/pos">
+      <i class="bi bi-plus-circle"></i> New Sale
+    </button>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-card">
+    <div class="row g-3">
+      <div class="col-md-3">
+        <input type="text" class="form-control" placeholder="Search by invoice..."
+               [(ngModel)]="searchTerm" (input)="searchSales()">
+      </div>
+      <div class="col-md-2">
+        <select class="form-select" [(ngModel)]="selectedStatus" (change)="filterByStatus()">
+          <option value="">All Status</option>
+          <option value="PAID">Paid</option>
+          <option value="UNPAID">Unpaid</option>
+          <option value="PARTIAL">Partial</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <input type="date" class="form-control" placeholder="Start Date"
+               [(ngModel)]="startDate" (change)="filterByDate()">
+      </div>
+      <div class="col-md-2">
+        <input type="date" class="form-control" placeholder="End Date"
+               [(ngModel)]="endDate" (change)="filterByDate()">
+      </div>
+      <div class="col-md-2">
+        <button class="btn btn-outline-secondary w-100" (click)="clearFilters()">
+          <i class="bi bi-eraser"></i> Clear
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner-border text-primary"></div>
+    <p>Loading sales...</p>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+  <!-- Sales Table -->
+  <div *ngIf="!loading" class="sales-table-card">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Invoice #</th>
+            <th>Customer</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Paid</th>
+            <th>Due</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let sale of paginatedSales">
+            <td class="fw-semibold">{{ sale.invoice_no }}</td>
+            <td>{{ sale.customer_name || 'Walk-in' }}</td>
+            <td>{{ sale.sale_date | date:'medium' }}</td>
+            <td>{{ sale.total_amount | currency }}</td>
+            <td>{{ sale.paid_amount | currency }}</td>
+            <td class="text-danger">{{ sale.due_amount | currency }}</td>
+            <td>
+              <span class="badge" [class]="getStatusBadgeClass(sale.payment_status)">
+                {{ sale.payment_status }}
+              </span>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-outline-info" (click)="viewSale(sale.sale_id)">
+                <i class="bi bi-eye"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-secondary ms-1" (click)="printInvoice(sale.sale_id)">
+                <i class="bi bi-printer"></i>
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="filteredSales.length === 0">
+            <td colspan="8" class="text-center py-5">
+              <i class="bi bi-inbox" style="font-size: 48px;"></i>
+              <p class="mt-2">No sales found</p>
+              <button class="btn btn-primary" routerLink="/sales/pos">Create New Sale</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- Pagination -->
+    <div class="pagination-footer" *ngIf="filteredSales.length > 0">
+      <div class="pagination-info">
+        Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to 
+        {{ Math.min(currentPage * itemsPerPage, totalItems) }} of {{ totalItems }} sales
+      </div>
+      <div class="pagination-controls">
+        <button class="btn btn-sm btn-outline-secondary" 
+                [disabled]="currentPage === 1" 
+                (click)="onPageChange(currentPage - 1)">
+          <i class="bi bi-chevron-left"></i> Previous
+        </button>
+        <span class="mx-2">Page {{ currentPage }} of {{ Math.ceil(totalItems / itemsPerPage) }}</span>
+        <button class="btn btn-sm btn-outline-secondary" 
+                [disabled]="currentPage === Math.ceil(totalItems / itemsPerPage)" 
+                (click)="onPageChange(currentPage + 1)">
+          Next <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

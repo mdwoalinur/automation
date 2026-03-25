@@ -6,6 +6,7 @@ export interface Sale {
   company_id: number;
   invoice_no: string;
   customer_id: number | null;
+  customer_name?: string;
   warehouse_id: number;
   user_id: number;
   sale_date: Date;
@@ -27,6 +28,7 @@ export class SaleModel implements Sale {
   company_id: number = 0;
   invoice_no: string = '';
    customer_id: number | null = null;
+   customer_name?: string;
   warehouse_id: number = 0;
   user_id: number = 0;
   sale_date: Date = new Date();
