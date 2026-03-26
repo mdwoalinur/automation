@@ -1,0 +1,32 @@
+<div class="card p-3 shadow-sm">
+
+  <div class="d-flex justify-content-between mb-3">
+    <h4>Products</h4>
+    <button class="btn btn-success">+ Add Product</button>
+  </div>
+
+  <table class="table table-bordered table-hover">
+
+    <thead class="table-light">
+      <tr>
+        <th>Code</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let p of products">
+        <td>{{p.product_code}}</td>
+        <td>{{p.product_name}}</td>
+        <td>{{p.selling_price}}</td>
+        <td>
+          <span class="badge bg-success">Active</span>
+        </td>
+      </tr>
+    </tbody>
+
+  </table>
+
+</div>

@@ -1,0 +1,29 @@
+<nav class="navbar navbar-light bg-white shadow-sm px-3">
+
+  <button class="btn btn-outline-secondary" (click)="toggleSidebar()">
+    ☰
+  </button>
+
+  <span class="ms-3 fw-bold">{{pageTitle}}</span>
+
+  <div class="ms-auto d-flex align-items-center">
+
+    <div class="me-3">
+      🔔 {{notifications.length}}
+    </div>
+
+    <div class="dropdown">
+      <button class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown">
+        {{currentUser}}
+      </button>
+
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li>
+          <a class="dropdown-item" (click)="logout()">Logout</a>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+</nav>

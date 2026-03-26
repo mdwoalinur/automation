@@ -8,6 +8,9 @@ import { Supplier } from '../models';
   providedIn: 'root'
 })
 export class SupplierService extends BaseService {
+  getSuppliers() {
+    throw new Error('Method not implemented.');
+  }
   constructor(http: HttpClient) {
     super(http, 'suppliers');
   }
