@@ -48,7 +48,7 @@ import { SaleListComponent } from './pages/sales/sale-list/sale-list.component';
 import { SaleDetailsComponent } from './pages/sales/sale-details/sale-details.component';
 
 // Purchases
-import { PurchaseListComponent } from './pages/purchases/purchase-list/purchase-list.component';
+//import { PurchaseListComponent } from './pages/purchases/purchase-list/purchase-list.component';
 import { PurchaseFormComponent } from './pages/purchases/purchase-form/purchase-form.component';
 
 // Customers & Suppliers
@@ -69,6 +69,7 @@ import { SupplierService } from './services/supplier.service';
 import { ReportService } from './services/report.service';
 import { RegisterComponent } from './pages/auth/register/register/register.component';
 import { LoginComponent } from './pages/auth/login/login/login.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -94,7 +95,7 @@ import { LoginComponent } from './pages/auth/login/login/login.component';
     PosComponent,
     SaleListComponent,
     SaleDetailsComponent,
-    PurchaseListComponent,
+   // PurchaseListComponent,
     PurchaseFormComponent,
     CustomerListComponent,
     SupplierListComponent,
@@ -107,7 +108,9 @@ import { LoginComponent } from './pages/auth/login/login/login.component';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    CommonModule ,
+    
   ],
   providers: [
     AuthGuard,

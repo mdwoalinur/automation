@@ -1,4 +1,7 @@
-/* Header Styles */
+/* ============================================
+   HEADER COMPONENT STYLES
+   ============================================ */
+
 .header {
   position: fixed;
   top: 0;
@@ -14,12 +17,14 @@
   padding: 0 24px;
 }
 
+/* ========== LEFT SECTION ========== */
 .header-left {
   display: flex;
   align-items: center;
   gap: 20px;
 }
 
+/* Sidebar Toggle Button */
 .menu-toggle {
   background: none;
   border: none;
@@ -29,6 +34,9 @@
   padding: 8px;
   border-radius: 8px;
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .menu-toggle:hover {
@@ -36,24 +44,55 @@
   color: #0d6efd;
 }
 
-/* Logo Styles */
+/* ========== LOGO STYLES ========== */
 .logo {
   display: flex;
   align-items: center;
   gap: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-/* ✅ Image Logo Styles */
+.logo:hover {
+  opacity: 0.9;
+}
+
+/* Option 1: Image Logo */
 .logo-img {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-radius: 10px;
   object-fit: cover;
 }
 
-/* Fallback if image fails to load */
-.logo-img {
+/* Option 2: Icon Logo */
+.logo-icon {
+  width: 40px;
+  height: 40px;
   background: linear-gradient(135deg, #0d6efd, #0a58ca);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 24px;
+}
+
+/* Option 3: Text Only Logo */
+.logo-text-large {
+  font-size: 28px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #0d6efd, #0a58ca);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/* Logo Text Container */
+.logo-text-container {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
 }
 
 .logo-text {
@@ -68,13 +107,14 @@
 .logo-badge {
   background: linear-gradient(135deg, #0d6efd, #0a58ca);
   color: white;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   padding: 2px 6px;
   border-radius: 20px;
-  margin-left: 4px;
+  display: inline-block;
+  width: fit-content;
 }
 
-/* Search Bar */
+/* ========== SEARCH BAR ========== */
 .nav-center {
   flex: 1;
   max-width: 500px;
@@ -122,7 +162,7 @@
   box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
 }
 
-/* Navigation Right */
+/* ========== RIGHT SECTION ========== */
 .nav-right {
   display: flex;
   align-items: center;
@@ -144,6 +184,9 @@
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .nav-icon-btn:hover {
@@ -180,22 +223,31 @@
   background: #f0f2f5;
 }
 
-.user-avatar-icon {
+/* User Avatar */
+.user-avatar {
   width: 40px;
   height: 40px;
-  background: #f0f2f5;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #6c757d;
-  font-size: 24px;
+  overflow: hidden;
 }
 
-.user-avatar-icon.large {
+.user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-avatar-large {
   width: 48px;
   height: 48px;
-  font-size: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.user-avatar-large img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .user-info {
@@ -215,7 +267,7 @@
   display: block;
 }
 
-/* Dropdown Menus */
+/* ========== DROPDOWN MENUS ========== */
 .dropdown-menu {
   border: none;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
@@ -245,6 +297,11 @@
   text-decoration: none;
 }
 
+.dropdown-header a:hover {
+  text-decoration: underline;
+}
+
+/* Notification Items */
 .notification-item,
 .message-item {
   display: flex;
@@ -278,19 +335,21 @@
   background: #28a745;
 }
 
-.message-icon {
+.notification-icon.bg-info {
+  background: #17a2b8;
+}
+
+.message-avatar {
   width: 40px;
   height: 40px;
-  border-radius: 12px;
+  border-radius: 50%;
+  background: #e9ecef;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: #6c757d;
+  font-size: 24px;
   flex-shrink: 0;
-}
-
-.message-icon.bg-info {
-  background: #17a2b8;
 }
 
 .notification-content p,
@@ -306,6 +365,11 @@
   color: #8e9aaf;
 }
 
+.message-content p strong {
+  font-weight: 600;
+}
+
+/* Dropdown Footer */
 .dropdown-footer {
   padding: 12px 16px;
   text-align: center;
@@ -318,6 +382,7 @@
   font-size: 0.85rem;
 }
 
+/* User Dropdown */
 .user-dropdown {
   min-width: 280px;
 }
@@ -348,6 +413,7 @@
   align-items: center;
   gap: 10px;
   text-decoration: none;
+  transition: all 0.2s ease;
 }
 
 .dropdown-item:hover {
@@ -357,6 +423,7 @@
 
 .dropdown-item i {
   width: 20px;
+  font-size: 1rem;
 }
 
 .dropdown-item.text-danger {
@@ -368,7 +435,7 @@
   color: #721c24;
 }
 
-/* Responsive */
+/* ========== RESPONSIVE DESIGN ========== */
 @media (max-width: 992px) {
   .nav-center {
     display: none;
@@ -384,8 +451,7 @@
     padding: 0 16px;
   }
   
-  .logo-text,
-  .logo-badge {
+  .logo-text-container {
     display: none;
   }
   
