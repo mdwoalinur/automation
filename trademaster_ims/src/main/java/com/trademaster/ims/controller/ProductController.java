@@ -12,17 +12,14 @@ import java.util.List;
 @RequestMapping("/products")
 @CrossOrigin(origins = "http://localhost:4200")
 public class ProductController {
+	
 
-    @Autowired
-    private ProductRepository repo;
+	   @RequestMapping(value = "/create", method = RequestMethod.POST)
+	    public void create() {
+	    	System.out.println("hit");
+	    	
 
-    @GetMapping
-    public List<Product> getAll() {
-        return repo.findAll();
-    }
-    
-    @PostMapping
-    public Product saveProduct(@RequestBody Product product) {
-        return repo.save(product);
-    }
+	   }
+
+   
 }
