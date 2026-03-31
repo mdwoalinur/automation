@@ -9,17 +9,22 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/api/products") // better practice
 @CrossOrigin(origins = "http://localhost:4200")
 public class ProductController {
-	
 
-	   @RequestMapping(value = "/create", method = RequestMethod.POST)
-	    public void create() {
-	    	System.out.println("hit");
-	    	
+    @Autowired
+    private ProductRepository repo;
 
-	   }
+    // ✅ Save Data (Angular → Spring)
+    @PostMapping
+    public Product saveProduct(@RequestBody Product product) {
+        return repo.save(product);
+    }
 
-   
+    // ✅ Get All Data
+    @GetMapping
+    public List<Product> getAll() {
+        return repo.findAll();
+    }
 }
