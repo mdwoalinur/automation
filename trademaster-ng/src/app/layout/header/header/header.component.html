@@ -1,29 +1,35 @@
-<nav class="navbar navbar-light bg-white shadow-sm px-3">
-
-  <button class="btn btn-outline-secondary" (click)="toggleSidebar()">
-    ☰
-  </button>
-
-  <span class="ms-3 fw-bold">{{pageTitle}}</span>
-
-  <div class="ms-auto d-flex align-items-center">
-
-    <div class="me-3">
-      🔔 {{notifications.length}}
-    </div>
-
-    <div class="dropdown">
-      <button class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown">
-        {{currentUser}}
-      </button>
-
-      <ul class="dropdown-menu dropdown-menu-end">
-        <li>
-          <a class="dropdown-item" (click)="logout()">Logout</a>
-        </li>
-      </ul>
-    </div>
-
+<header class="header">
+  <div class="d-flex align-items-center">
+    <button class="btn btn-link text-dark" (click)="toggleSidebar()">
+      <i class="bi bi-list"></i>
+    </button>
+    <span class="ms-3 fw-bold">{{ pageTitle }}</span>
   </div>
+  <div class="d-flex align-items-center">
+    <!-- Notifications -->
+    <div class="dropdown">
+      <button class="btn btn-link text-dark position-relative" data-bs-toggle="dropdown">
+        🔔 {{ unreadCount }}
+      </button>
+      <div class="dropdown-menu dropdown-menu-end">
+        <div class="dropdown-header">Notifications</div>
+        <div *ngFor="let n of notifications" class="dropdown-item" [class.text-muted]="n.read">
+          {{ n.message }}
+        </div>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" (click)="markAllAsRead()">Mark all read</a>
+      </div>
+    </div>
 
-</nav>
+    <!-- User menu -->
+    <div class="dropdown ms-3">
+      <button class="btn btn-link text-dark" data-bs-toggle="dropdown">
+        {{ currentUser }}
+      </button>
+      <div class="dropdown-menu dropdown-menu-end">
+        <a class="dropdown-item" href="#">Profile</a>
+        <a class="dropdown-item" (click)="logout()">Logout</a>
+      </div>
+    </div>
+  </div>
+</header>
