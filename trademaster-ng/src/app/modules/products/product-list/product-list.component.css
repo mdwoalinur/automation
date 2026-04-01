@@ -1,0 +1,12 @@
+.content-wrapper {
+  padding: 24px;
+  background: #f8f9fc;
+  /* Sidebar width 260px hole eikhane margin thaka dorkar 
+     jodi .main-content class-e na thake */
+}
+
+/* Form card-ke ektu guchiye rakhar jonno */
+.card {
+  max-width: 1200px; /* Onek beshi lomba jeno na hoy */
+  margin: 0 auto;    /* Center-e thakar jonno */
+}

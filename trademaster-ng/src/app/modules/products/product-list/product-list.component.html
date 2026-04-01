@@ -1,32 +1,99 @@
-<div class="card p-3 shadow-sm">
+<div class="container-fluid">
+  <div class="card border-0 shadow-sm rounded-3">
+    <div class="card-header bg-white py-3 border-bottom">
+      <h5 class="mb-0 fw-bold"><i class="bi bi-box-seam me-2"></i>Product Information</h5>
+    </div>
+    
+    <div class="card-body p-4">
+      <form class="row g-3">
+        <div class="col-md-8">
+          <label class="form-label fw-bold text-secondary">Product Name</label>
+          <input type="text" class="form-control form-control-lg" placeholder="Enter product name">
+        </div>
 
-  <div class="d-flex justify-content-between mb-3">
-    <h4>Products</h4>
-    <button class="btn btn-success">+ Add Product</button>
+        <div class="col-md-4">
+          <label class="form-label fw-bold text-secondary">Status</label>
+          <select class="form-select form-select-lg">
+            <option value="ACTIVE">ACTIVE</option>
+            <option value="INACTIVE">INACTIVE</option>
+          </select>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label fw-bold text-secondary">Product Code</label>
+          <input type="text" class="form-control" placeholder="PC-0001">
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label fw-bold text-secondary">SKU</label>
+          <input type="text" class="form-control" placeholder="SKU-XYZ">
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label fw-bold text-secondary">Category</label>
+          <select class="form-select">
+            <option value="">Select Category</option>
+          </select>
+        </div>
+
+        <div class="col-12 mt-4">
+          <h6 class="text-primary border-bottom pb-2">Pricing & Stock</h6>
+        </div>
+
+        <div class="col-md-3">
+          <label class="form-label fw-bold">Buying Price</label>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <input type="number" class="form-control">
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <label class="form-label fw-bold">Selling Price</label>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <input type="number" class="form-control">
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <label class="form-label fw-bold">Tax Rate (%)</label>
+          <input type="number" class="form-control" placeholder="0.00">
+        </div>
+
+        <div class="col-md-3">
+          <label class="form-label fw-bold">Base Unit</label>
+          <select class="form-select">
+            <option value="1">Pieces</option>
+          </select>
+        </div>
+
+        <div class="col-md-4 mt-3">
+          <div class="p-3 bg-light rounded border-start border-danger border-4">
+             <label class="form-label small fw-bold text-danger">Min Stock Level</label>
+             <input type="number" class="form-control">
+          </div>
+        </div>
+        
+        <div class="col-md-4 mt-3">
+          <div class="p-3 bg-light rounded border-start border-success border-4">
+             <label class="form-label small fw-bold text-success">Max Stock Level</label>
+             <input type="number" class="form-control">
+          </div>
+        </div>
+
+        <div class="col-md-4 mt-3">
+          <div class="p-3 bg-light rounded border-start border-warning border-4">
+             <label class="form-label small fw-bold text-warning">Reorder Level</label>
+             <input type="number" class="form-control">
+          </div>
+        </div>
+
+        <div class="col-12 mt-4 pt-3 border-top text-end">
+          <button type="button" class="btn btn-outline-secondary me-2 px-4">Cancel</button>
+          <button type="submit" class="btn btn-primary px-5 shadow-sm">Save Product</button>
+        </div>
+      </form>
+    </div>
   </div>
-
-  <table class="table table-bordered table-hover">
-
-    <thead class="table-light">
-      <tr>
-        <th>Code</th>
-        <th>Name</th>
-        <th>Price</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr *ngFor="let p of products">
-        <td>{{p.product_code}}</td>
-        <td>{{p.product_name}}</td>
-        <td>{{p.selling_price}}</td>
-        <td>
-          <span class="badge bg-success">Active</span>
-        </td>
-      </tr>
-    </tbody>
-
-  </table>
-
 </div>

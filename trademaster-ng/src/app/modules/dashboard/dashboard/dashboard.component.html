@@ -1,31 +1,168 @@
-<div class="row">
-
-  <div class="col-md-3">
-    <div class="card shadow-sm p-3">
-      <h6>Total Products</h6>
-      <h3>120</h3>
+<div class="dashboard">
+  <!-- Welcome Banner -->
+  <div class="welcome-banner">
+    <div class="banner-content">
+      <h1>Welcome back, Admin! 👋</h1>
+      <p>Here's what's happening with your inventory today.</p>
+    </div>
+    <div class="date-time">
+      <div class="date">{{ currentDate | date:'EEEE, MMMM d, yyyy' }}</div>
+      <div class="time">{{ currentTime }}</div>
     </div>
   </div>
 
-  <div class="col-md-3">
-    <div class="card shadow-sm p-3">
-      <h6>Total Sales</h6>
-      <h3>540</h3>
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon bg-primary">
+        <i class="bi bi-box"></i>
+      </div>
+      <div class="stat-info">
+        <h3>{{ stats.totalProducts }}</h3>
+        <p>Total Products</p>
+        <span class="trend up">+12% from last month</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon bg-success">
+        <i class="bi bi-cart-check"></i>
+      </div>
+      <div class="stat-info">
+        <h3>{{ stats.todaySales | currency }}</h3>
+        <p>Today's Sales</p>
+        <span class="trend up">+8% from yesterday</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon bg-warning">
+        <i class="bi bi-exclamation-triangle"></i>
+      </div>
+      <div class="stat-info">
+        <h3>{{ stats.lowStock }}</h3>
+        <p>Low Stock Items</p>
+        <span class="trend down">Need reorder</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon bg-info">
+        <i class="bi bi-people"></i>
+      </div>
+      <div class="stat-info">
+        <h3>{{ stats.totalCustomers }}</h3>
+        <p>Total Customers</p>
+        <span class="trend up">+24 new this week</span>
+      </div>
     </div>
   </div>
 
-  <div class="col-md-3">
-    <div class="card shadow-sm p-3">
-      <h6>Low Stock</h6>
-      <h3 class="text-danger">12</h3>
+  <!-- Charts & Top Products -->
+  <div class="row g-4">
+    <div class="col-xl-8">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h5 class="card-title">Sales Overview</h5>
+            <p class="card-subtitle">Last 7 days performance</p>
+          </div>
+          <div class="card-actions">
+            <button class="btn btn-sm btn-outline-secondary">Daily</button>
+            <button class="btn btn-sm btn-outline-primary">Weekly</button>
+            <button class="btn btn-sm btn-outline-secondary">Monthly</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <canvas id="salesChart" height="300"></canvas>
+          <p class="text-muted text-center mt-3">Sales chart will appear here</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Top Selling Products</h5>
+          <a href="#" class="view-all">View All</a>
+        </div>
+        <div class="card-body p-0">
+          <div class="top-products-list">
+            <div class="product-item" *ngFor="let product of topProducts; let i = index">
+              <div class="product-rank">{{ i + 1 }}</div>
+              <div class="product-info">
+                <h6>{{ product.name }}</h6>
+                <span>{{ product.sold }} units sold</span>
+              </div>
+              <div class="product-revenue">{{ product.revenue | currency }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="col-md-3">
-    <div class="card shadow-sm p-3">
-      <h6>Revenue</h6>
-      <h3 class="text-success">$15,000</h3>
+  <!-- Recent Sales & Low Stock -->
+  <div class="row g-4 mt-2">
+    <div class="col-xl-7">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Recent Sales</h5>
+          <a href="#" class="view-all">View All</a>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Invoice No</th>
+                  <th>Customer</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                 </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let sale of recentSales">
+                  <td class="fw-semibold">{{ sale.invoice_no }}</td>
+                  <td>{{ sale.customer_name }}</td>
+                  <td>{{ sale.total_amount | currency }}</td>
+                  <td>
+                    <span class="badge" [class.bg-success]="sale.payment_status === 'PAID'"
+                          [class.bg-warning]="sale.payment_status === 'PARTIAL'"
+                          [class.bg-danger]="sale.payment_status === 'UNPAID'">
+                      {{ sale.payment_status }}
+                    </span>
+                  </td>
+                  <td>{{ sale.sale_date | date:'short' }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-5">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Low Stock Alert</h5>
+          <a href="#" class="view-all">View All</a>
+        </div>
+        <div class="card-body p-0">
+          <div class="low-stock-list">
+            <div class="stock-item" *ngFor="let item of lowStockItems">
+              <div class="stock-icon bg-warning">
+                <i class="bi bi-box"></i>
+              </div>
+              <div class="stock-info">
+                <h6>{{ item.name }}</h6>
+                <p>SKU: {{ item.sku }}</p>
+              </div>
+              <div class="stock-quantity">
+                <span class="quantity">{{ item.quantity }} left</span>
+                <span class="reorder">Reorder at {{ item.reorderLevel }}</span>
+              </div>
+              <button class="btn btn-sm btn-primary">Order Now</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-
 </div>
